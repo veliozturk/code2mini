@@ -1,0 +1,104 @@
+
+<!DOCTYPE html><html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Code2</title>
+    <script type="text/javascript" src="/enjoyhint/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+function redirectAuth() {
+
+		var parameters = document.location.search;
+		//console.log("this is --->  ",parameters);
+		var both = parameters.replace("?email_projectid=", "");
+		//console.log("both ", both);
+		var projectUuid = both.substring(0, 36);
+		//console.log("projectid ", projectUuid);
+		var mail = both.replace(projectUuid, "");
+		//console.log("email ", mail);
+		$.ajax({
+			url: '/auth/login',
+			data: {
+				email: mail,
+				projectId: projectUuid
+			},
+			type: 'GET', dataType:'text',
+			success: function (result) {
+				window.location.href = result;
+			},
+			failure: function (result) {
+				alert('Error: ' + result)
+			}
+		});
+}
+
+</script>
+</head>
+<body onload="redirectAuth()" style="margin:0;background:radial-gradient(#40404b, #111118) rgba(34,34,40,0.94);">
+<div id="loading-mask">
+      <img class="loader" src="/images/rabbit-head.png">
+<span class="shadow"></span>
+    </div>
+<style>
+#loading-mask {
+	position: absolute;
+	top: calc(50vh - 10px);
+	left: calc(50% - 30px);
+z-index:20099;
+}
+
+#loading-mask .loader {
+	width: 60px;
+	height: 63px; margin-top:-1px; margin-left:4px;
+	z-index: 20100;
+	animation: jump .8s ease-in infinite
+}
+
+
+#loading-mask .shadow {
+	position: absolute;
+	z-index: -1;
+	top: 48px;
+	left: 0;
+	display: block;
+	border-radius: 100%;
+	height: 10px;
+	width: 60px;
+	background: #000;
+	opacity: .3;
+	animation: scale-shadow .8s ease-in infinite
+}
+
+@keyframes jump {
+	0% {
+		transform: translateY(0) scale(1.15, .8)
+	}
+	20% {
+		transform: translateY(-35px) scaleY(1.1)
+	}
+	50% {
+		transform: translateY(-50px) scale(1)
+	}
+	80% {
+		transform: translateY(-35px) scale(1)
+	}
+	to {
+		transform: translateY(0) scale(1.15, .8)
+	}
+}
+
+@keyframes scale-shadow {
+	0% {
+		opacity: .3;
+		transform: scale(1)
+	}
+	50% {
+		opacity: .2;
+		transform: scale(.5)
+	}
+	to {
+		opacity: .3;
+		transform: scale(1)
+	}
+}
+  </style>
+</body>
+</html>
